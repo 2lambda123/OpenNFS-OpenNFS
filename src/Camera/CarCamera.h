@@ -1,11 +1,10 @@
 #pragma once
 
-#include "BaseCamera.h"
-
 #include "../Physics/Car.h"
 
-class CarCamera : public BaseCamera
-{
+#include "BaseCamera.h"
+
+class CarCamera : public BaseCamera {
 public:
     explicit CarCamera() = default;
     CarCamera(const std::shared_ptr<GLFWwindow> &window);

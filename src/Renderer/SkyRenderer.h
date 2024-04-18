@@ -1,17 +1,16 @@
 #pragma once
 
-#include "../Util/ImageLoader.h"
+#include "../Camera/BaseCamera.h"
+#include "../Scene/GlobalLight.h"
 #include "../Scene/Track.h"
 #include "../Shaders/SkydomeShader.h"
-#include "../Camera/BaseCamera.h"
-#include "../Scene/Lights/GlobalLight.h"
+#include "../Util/ImageLoader.h"
 
-class SkyRenderer
-{
+class SkyRenderer {
 public:
     explicit SkyRenderer();
     ~SkyRenderer();
-    void Render(const std::shared_ptr<BaseCamera> &camera, const std::shared_ptr<GlobalLight> &light, float elapsedTime);
+    void Render(const BaseCamera &camera, const std::shared_ptr<GlobalLight> &light, float elapsedTime);
 
 private:
     // Load cloud, sun, moon and tint textures

@@ -1,13 +1,11 @@
 #include "HermiteCamera.h"
 
 HermiteCamera::HermiteCamera(const HermiteCurve &trackCenterSpline, const std::shared_ptr<GLFWwindow> &window) :
-    BaseCamera(CameraMode::HERMITE_FLYTHROUGH, window), m_trackCameraRail(trackCenterSpline)
-{
+    BaseCamera(CameraMode::HERMITE_FLYTHROUGH, window), m_trackCameraRail(trackCenterSpline) {
     m_loopTime = static_cast<int>(m_trackCameraRail.GetLength()) * 100;
 }
 
-void HermiteCamera::UseSpline(float elapsedTime)
-{
+void HermiteCamera::UseSpline(float elapsedTime) {
     // Ensure we're never sampling the hermite curve outside of points arr size.
     float tmod = fmod(elapsedTime, (m_loopTime / 202.5f)) / (m_loopTime / 200.f);
     position   = m_trackCameraRail.GetPointAt(tmod);
@@ -24,7 +22,7 @@ void HermiteCamera::UseSpline(float elapsedTime)
     glm::vec3 cn  = position - lookAtPos;
     glm::vec3 tn  = position;
     float newRoll = (atan2(cn.z, cn.x) - atan2(tn.z, tn.x));
-    newRoll += (newRoll > SIMD_PI) ? -SIMD_PI * 2 : (newRoll < -SIMD_PI) ? SIMD_PI * 2 : 0;
+    newRoll += (newRoll > glm::pi<float>()) ? -glm::pi<float>() * 2 : (newRoll < -glm::pi<float>()) ? glm::pi<float>() * 2 : 0;
     m_roll = m_roll * 0.95f + (newRoll) *0.1f;
 
     // Create a new 'up' vector, based on the roll value

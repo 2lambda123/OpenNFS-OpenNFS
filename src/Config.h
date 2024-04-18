@@ -6,12 +6,9 @@
 #include <vector>
 #include <fstream>
 #include <map>
-#include <boost/program_options.hpp>
 
-#include "Enums.h"
+#include "Common/NFSVersion.h"
 #include "Util/Logger.h"
-
-using namespace boost::program_options;
 
 /* --------------- ONFS Compile time parameters here -----------------*/
 /* Some graphics parameters can be found at file SHADER_PREAMBLE_PATH */
@@ -49,8 +46,8 @@ const std::string NFS_5_CAR_PATH   = "/gamedata/carmodel/";
 
 // ----- Graphics -----
 const uint16_t MAX_TEXTURE_ARRAY_SIZE = 512;
-const uint32_t DEFAULT_X_RESOLUTION   = 1920;
-const uint32_t DEFAULT_Y_RESOLUTION   = 1080;
+const uint32_t DEFAULT_X_RESOLUTION   = 2560;
+const uint32_t DEFAULT_Y_RESOLUTION   = 1600;
 const float DEFAULT_FOV               = 55.f;
 // Shadow Map Resolution
 const unsigned int SHADOW_WIDTH  = 2048; // Resolution of shadow map
@@ -62,42 +59,30 @@ const int NEIGHBOUR_BLOCKS_FOR_LIGHTS = 1; // Number of neighbouring trackblocks
 // ----- Defaults -----
 const std::string DEFAULT_CAR           = "corv";
 const std::string DEFAULT_TRACK         = "trk003";
-const std::string DEFAULT_CAR_NFS_VER   = ToString(NFS_3);
-const std::string DEFAULT_TRACK_NFS_VER = ToString(NFS_3);
+const std::string DEFAULT_CAR_NFS_VER   = get_string(NFSVersion::NFS_3);
+const std::string DEFAULT_TRACK_NFS_VER = get_string(NFSVersion::NFS_3);
 const int DEFAULT_NUM_RACERS            = 0;
 
 /* --------------- ONFS Runtime parameters here -----------------*/
-class Config
-{
+class Config {
 public:
-    static Config& get()
-    {
+    static Config& get() {
         static Config instance;
         return instance;
     }
     void ParseFile(std::ifstream& inStream);
     void InitFromCommandLine(int argc, char** argv);
-    template <typename _T>
-    _T getValue(const std::string& key)
-    {
-        return storedConfig[key].as<_T>();
-    };
     // Better named parameters instead of using var_map with command-line arg name
     std::string car = DEFAULT_CAR, track = DEFAULT_TRACK;
     std::string carTag = DEFAULT_CAR_NFS_VER, trackTag = DEFAULT_TRACK_NFS_VER;
     uint16_t nRacers = DEFAULT_NUM_RACERS;
     /* -- Physics/AI Params -- */
     bool useFullVroad = true;
-    bool sparkMode    = false;
     /* -- Render Params -- */
     bool vulkanRender = false;
     bool headless     = false;
     float fov         = DEFAULT_FOV;
     uint32_t resX = DEFAULT_X_RESOLUTION, resY = DEFAULT_Y_RESOLUTION;
-    /* -- Training Params -- */
-    bool trainingMode     = false;
-    uint16_t nGenerations = 0;
-    uint32_t nTicks;
     /* -- Tool Params -- */
     bool renameAssets = false;
 
@@ -105,11 +90,9 @@ private:
     Config() = default;
     Config(const Config&);
     Config& operator=(const Config&);
-    variables_map storedConfig;
 };
 
-struct ParamData
-{
+struct ParamData {
     float timeScaleFactor       = 1.f;
     ImVec4 sunAttenuation       = ImVec4(0.f, 0.f, 0.f, 1.0f);
     float trackSpecReflectivity = 1;
@@ -117,6 +100,7 @@ struct ParamData
     float farPlane              = 300.f;
     float trackSpecDamper       = 10;
     int blockDrawDistance       = 15;
+    bool useFrustumCull         = true;
     bool physicsDebugView       = false;
     bool drawHermiteFrustum     = false;
     bool drawTrackAABB          = false;
@@ -124,24 +108,21 @@ struct ParamData
     bool attachCamToHermite     = false;
     bool useNbData              = true;
     bool attachCamToCar         = true;
-    bool frustumCull            = false;
     bool drawVroad              = false;
     bool drawCAN                = false;
     bool drawRaycast            = false;
     bool simulateCars           = true;
 };
 
-struct AssetData
-{
-    NFSVer carTag;
+struct AssetData {
+    NFSVersion carTag;
     std::string car;
-    NFSVer trackTag;
+    NFSVersion trackTag;
     std::string track;
 };
 
-struct NfsAssetList
-{
-    NFSVer tag;
+struct NfsAssetList {
+    NFSVersion tag;
     std::vector<std::string> tracks;
     std::vector<std::string> cars;
 };

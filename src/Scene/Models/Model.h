@@ -5,16 +5,15 @@
 #include <vector>
 #include <cstdlib>
 #include <string>
-#include <glm/glm.hpp>
 #include <GL/glew.h>
+#include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <BulletDynamics/Dynamics/btRigidBody.h>
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/quaternion.hpp>
 #include <LinearMath/btDefaultMotionState.h>
 
-class Model
-{
+class Model {
 public:
     Model(std::string name, std::vector<glm::vec3> vertices, std::vector<glm::vec2> uvs, std::vector<glm::vec3> normals, std::vector<uint32_t> vertexIndices,
           bool removeVertexIndexing, glm::vec3 centerPosition);

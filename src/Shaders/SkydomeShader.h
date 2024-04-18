@@ -1,11 +1,11 @@
 #pragma once
 
 #include "BaseShader.h"
-#include "../Util/Utils.h"
-#include "../Scene/Lights/GlobalLight.h"
 
-class SkydomeShader : public BaseShader
-{
+#include "../Scene/GlobalLight.h"
+#include "../Util/Utils.h"
+
+class SkydomeShader : public BaseShader {
 public:
     SkydomeShader();
     void loadSunPosition(const std::shared_ptr<GlobalLight> &light);

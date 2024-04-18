@@ -1,15 +1,16 @@
 #pragma once
 
 #include "BaseShader.h"
-#include "../Scene/Models/TrackModel.h"
-#include "../Scene/Lights/BaseLight.h"
-#include "../Scene/Lights/Spotlight.h"
-#include "../../shaders/ShaderPreamble.h"
 #include <glm/detail/type_mat4x4.hpp>
 #include <map>
+#include <Models/BaseLight.h>
 
-class TrackShader : public BaseShader
-{
+#include "../Scene/Models/TrackModel.h"
+#include "../Scene/Spotlight.h"
+#include "../../shaders/ShaderPreamble.h"
+
+
+class TrackShader : public BaseShader {
 public:
     TrackShader();
     void bindTextureArray(GLuint textureArrayID);
